@@ -7,7 +7,8 @@ import '../../utils/location_helper.dart';
 class PetugasDashboard extends StatefulWidget {
   const PetugasDashboard({super.key});
 
-  @override State<PetugasDashboard> createState() => _PetugasDashboardState();
+  @override
+  State<PetugasDashboard> createState() => _PetugasDashboardState();
 }
 
 class _PetugasDashboardState extends State<PetugasDashboard> {
@@ -21,10 +22,10 @@ class _PetugasDashboardState extends State<PetugasDashboard> {
   }
 
   void _initSocket() {
-    final base = Uri.parse('http://10.0.2.2:4000'); // sync with constants, or use API.SOCKET_IO
+    final base = Uri.parse('http://10.0.2.2:4000');
     socket = IO.io(base.toString(), <String, dynamic>{'transports': ['websocket']});
-    socket!.on('connect', (_) => setState(()=>connected=true));
-    socket!.on('disconnect', (_) => setState(()=>connected=false));
+    socket!.on('connect', (_) => setState(() => connected = true));
+    socket!.on('disconnect', (_) => setState(() => connected = false));
   }
 
   _sendLocation() async {
@@ -44,11 +45,27 @@ class _PetugasDashboardState extends State<PetugasDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Petugas Dashboard')), body: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-      Text('Socket: ${connected? "connected":"disconnected"}'),
-      const SizedBox(height: 12),
-      ElevatedButton(onPressed: _sendLocation, child: const Text('Kirim Lokasi Sekarang'))
-    ])));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Petugas Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => Provider.of<AuthProvider>(context, listen: false).logout(context),
+          )
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Socket: ${connected ? "connected" : "disconnected"}'),
+            const SizedBox(height: 12),
+            ElevatedButton(onPressed: _sendLocation, child: const Text('Kirim Lokasi Sekarang'))
+          ],
+        ),
+      ),
+    );
   }
 
   @override
