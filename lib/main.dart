@@ -5,9 +5,9 @@ import 'providers/auth_provider.dart';
 import 'providers/laundry_provider.dart';
 import 'providers/order_provider.dart';
 import 'routes/app_routes.dart';
-import 'views/shared/splash_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const NyuciinApp());
 }
 
@@ -25,8 +25,8 @@ class NyuciinApp extends StatelessWidget {
       child: MaterialApp(
         title: 'NYUCIIN',
         theme: appTheme,
-        initialRoute: '/',
         routes: appRoutes,
+        initialRoute: '/',
         debugShowCheckedModeBanner: false,
       ),
     );
