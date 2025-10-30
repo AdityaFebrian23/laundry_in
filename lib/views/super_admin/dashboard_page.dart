@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
 import '../../config/constants.dart';
+import '../../providers/auth_provider.dart';
 import 'dart:convert';
 
 class SuperAdminDashboard extends StatefulWidget {
   const SuperAdminDashboard({super.key});
 
-  @override State<SuperAdminDashboard> createState() => _SuperAdminDashboardState();
+  @override
+  State<SuperAdminDashboard> createState() => _SuperAdminDashboardState();
 }
 
 class _SuperAdminDashboardState extends State<SuperAdminDashboard> {
@@ -39,19 +42,36 @@ class _SuperAdminDashboardState extends State<SuperAdminDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Super Admin')), body: loading ? const Center(child: CircularProgressIndicator()) : ListView.builder(
-      itemCount: pending.length,
-      itemBuilder: (c,i){
-        final p = pending[i];
-        return ListTile(
-          title: Text(p['name'] ?? ''),
-          subtitle: Text(p['address']?['street'] ?? ''),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-            IconButton(icon: const Icon(Icons.check, color: Colors.green), onPressed: () => _verify(p['_id'], true)),
-            IconButton(icon: const Icon(Icons.close, color: Colors.red), onPressed: () => _verify(p['_id'], false))
-          ]),
-        );
-      },
-    ));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Super Admin'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => Provider.of<AuthProvider>(context, listen: false).logout(context),
+          )
+        ],
+      ),
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: pending.length,
+              itemBuilder: (c, i) {
+                final p = pending[i];
+                return ListTile(
+                  title: Text(p['name'] ?? ''),
+                  subtitle: Text(p['address']?['street'] ?? ''),
+                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                    IconButton(
+                        icon: const Icon(Icons.check, color: Colors.green),
+                        onPressed: () => _verify(p['_id'], true)),
+                    IconButton(
+                        icon: const Icon(Icons.close, color: Colors.red),
+                        onPressed: () => _verify(p['_id'], false))
+                  ]),
+                );
+              },
+            ),
+    );
   }
 }
