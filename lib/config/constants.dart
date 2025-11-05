@@ -1,5 +1,7 @@
 class API {
+
   static const String HOST = '10.61.10.194'; // IP dari log server Node.js
+  static const String HOST = '192.168.100.232'; // IP laptop kamu
   static const String BASE_URL = 'http://$HOST:5000/api';
   static const String AUTH = '$BASE_URL/auth';
   static const String USERS = '$BASE_URL/users';
